@@ -1,0 +1,130 @@
+body {
+    background: ghostwhite;
+    color: gray;
+}
+
+
+.main-header {
+    text-align: center;
+    margin-top: 200px;
+    text-transform: uppercase;
+}
+
+.todo-wrapper {
+    display:flex;
+    margin: 0 auto;
+    margin-top: 50px;
+    flex-direction: column;
+    max-width: 550px;
+    box-shadow: 0 0 5px gray ;
+}
+.todo-input {
+    border: none;
+    padding: 25px 15px 25px 25px;
+    border-radius: 5px;
+}
+.todo-input:focus {
+    outline: none;
+}
+.todo-item {
+   display: none;
+   background: white;
+   padding: 10px;
+   border-top: 2px solid lightgray;
+}
+.todo-text {
+    position: relative;
+    top:10px;
+    left: 10px;
+}
+.clear-btn {
+    margin-left: 100px;
+}
+.btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.btn:focus {
+    outline: none;
+    border: 2px solid pink;
+    border-radius: 5px;
+}
+
+.btn-category:first-of-type {
+    margin-left: 120px;
+}
+.todo-bottom-bar {
+    padding: 10px;
+    box-shadow: 0 0 5px gray ;
+    background: white;
+    display: flex;
+    justify-content: center;
+}
+.circle {
+    cursor: pointer;
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    border: 2px solid lightgray;
+    border-radius: 40px;
+}
+.check-icon {
+    visibility: hidden;
+}
+.check-icon:before {
+    position: relative;
+    top: 7px;
+    left:14px;
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 3px;
+    background: green;
+    transform: rotate(-45deg);
+}
+.check-icon:after {
+    position: relative;
+    top: 9px;
+    left:-11px;
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 3px;
+    background: green;
+    transform: rotate( 45deg);
+}
+.cancel-icon  {
+    float: right;
+    padding-top: 10px;
+    cursor: pointer;
+    opacity: 0.25;
+}
+.cancel-icon:hover {
+    opacity: 1;
+}
+.cancel-icon:before {
+    position: relative;
+    left: 30px;
+    display: inline-block;
+    content: "";
+    height: 4px;
+    width: 30px;
+    background: palevioletred;
+    transform: rotate( 45deg);
+}
+.cancel-icon:after {
+ 
+    display: inline-block;
+    content: "";
+    height: 4px;
+    width: 30px;
+    background: palevioletred;
+    transform: rotate(-45deg);
+}
+.visible {
+    visibility: visible;
+}
+.line {
+    text-decoration: line-through;
+}
