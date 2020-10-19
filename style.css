@@ -2,8 +2,6 @@ body {
     background: ghostwhite;
     color: gray;
 }
-
-
 .main-header {
     text-align: center;
     margin-top: 200px;
@@ -27,7 +25,6 @@ body {
     outline: none;
 }
 .todo-item {
-   display: none;
    background: white;
    padding: 10px;
    border-top: 2px solid lightgray;
