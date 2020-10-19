@@ -3,30 +3,43 @@ const ToDoItem = document.getElementById('todo-item');
 const btnAll = document.getElementById('btn-all');
 const btnActive = document.getElementById('btn-active');
 const btnComp = document.getElementById('btn-completed');
+const btnClear = document.getElementById('clear-btn');
 let arrItems = [];
 
 
-
-
 btnComp.addEventListener('click',function(evt) {
-    evt.preventDefault();
 
-    let ListActive = document.querySelectorAll('.todo-item');
-    ListActive.forEach(function(item, index) {
-            if (!item.firstElementChild.firstElementChild.classList.contains('visible')) {
+    arrItems.forEach(function(item, index) {
+
+      const checkIcon =  item.querySelector('.check-icon');
+
+            if (!checkIcon.classList.contains('visible')) {
                     item.style.display = 'none';
-            } else if (item.firstElementChild.firstElementChild.classList.contains('visible')) {
+            } else if (checkIcon.classList.contains('visible')) {
                     item.style.display = 'block';
             }
     });
 
-})
+});
+btnClear.addEventListener('click',function(evt) {
 
+    while (arrItems.some((item) => item.querySelector('.check-icon').classList.contains('visible') )) {
+
+        arrItems.forEach(function(item,index) {
+
+            const checkIcon = item.querySelector('.check-icon');
+
+             if (checkIcon.classList.contains('visible')) {
+                item.style.display = 'none';
+                arrItems.splice(index,1);
+             }
+    
+        })
+    }
+});
 
 
 btnAll.addEventListener('click',function(evt) {
-
-    evt.preventDefault();
 
     arrItems.forEach(function(item,index) {
         
@@ -38,13 +51,13 @@ btnAll.addEventListener('click',function(evt) {
 
 btnActive.addEventListener('click',function(evt) {
 
-    evt.preventDefault();
+    arrItems.forEach(function(item, index) {
 
-    let ListActive = document.querySelectorAll('.todo-item');
-    ListActive.forEach(function(item, index) {
-            if (item.firstElementChild.firstElementChild.classList.contains('visible')) {
+        const checkIcon =  item.querySelector('.check-icon');
+
+            if (checkIcon.classList.contains('visible')) {
                     item.style.display = 'none';
-            } else if (!item.firstElementChild.firstElementChild.classList.contains('visible')) {
+            } else if (!checkIcon.classList.contains('visible')) {
                     item.style.display = 'block';
             }
     });
@@ -57,43 +70,44 @@ ToDoInput.addEventListener('keydown', function(evt) {
 
     if (evt.key === 'Enter') {
 
-        evt.preventDefault();
-
         const CloneItem = document.getElementById('todo-item').cloneNode(true);
-        CloneItem.style.display = 'block';
-        const cancel = CloneItem.querySelector('.cancel-icon');
-        CloneItem.querySelector('.todo-text').textContent = val;
         const circle = CloneItem.querySelector('.circle'); 
+        const cancel = CloneItem.querySelector('.cancel-icon');
+
+        CloneItem.style.display = 'block';
+        CloneItem.querySelector('.todo-text').textContent = val;
         circle.nextElementSibling.classList.remove('line');
         circle.firstChild.classList.remove('visible');
+
+        const ExistingTask = arrItems.some((item)  =>  val === item.querySelector('.todo-text').textContent) ;
+
+        if (ExistingTask) {
+
+            alert('this task already exist');
+            ToDoInput.style.boxShadow = ' 0 0 10px red';
+
+        } else if (val !== '') {
+
+        ToDoInput.style.boxShadow = 'none';
 
         arrItems.push(CloneItem);
 
         ToDoInput.after(CloneItem);
 
-          ///  ToDoInput.insertAdjacentHTML('afterend', CloneItem);
-
-          
-
         circle.addEventListener('click',function() {
-
            circle.firstChild.classList.toggle('visible');
            circle.nextElementSibling.classList.toggle('line');
-
         });
+
         cancel.addEventListener('click',function() {
-           CloneItem.style.display = 'none';
-           arrItems.forEach(function(item,index) {
-             if (CloneItem.querySelector('.todo-text').textContent === item.querySelector('.todo-text').textContent) {
-                arrItems.splice(index,1);
-             }
-           });
+           
+            const ToDoText = CloneItem.querySelector('.todo-text').textContent;
+            CloneItem.style.display = 'none';
+
+           arrItems.forEach((item,index) => { if ( ToDoText === item.querySelector('.todo-text').textContent) {arrItems.splice(index,1);}}
+           );
         });
-
-         
-
+        }
     }
-
-
 });
 
