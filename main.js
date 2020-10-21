@@ -5,50 +5,64 @@ const btnComp = document.getElementById("btn-completed");
 const btnClear = document.getElementById("clear-btn");
 
 let id = 0;
-let TaskItemList = [];
+let taskItemList = [];
+
+function comparing(arr, item, id, stateFirst, stateSecond) {
+  arr.includes(id)? (item.style.display = stateFirst) : (item.style.display = stateSecond);
+}
 
 btnComp.addEventListener("click", function (evt) {
   let toDoItems = document.querySelectorAll(".todo-item");
 
-  let CompArr = TaskItemList.map((item, index) => {
+  let compArr = taskItemList.map((item) => {
     if (item.completed) {
       return item.id;
     }
   });
-  toDoItems.forEach((item, index) => {
+  toDoItems.forEach((item) => {
     idNumb = parseInt(item.id, 10);
-
-    CompArr.includes(idNumb)? item.style.display = "block" : item.style.display = "none";
+    comparing(compArr, item, idNumb, "block", "none");
   });
 });
 
 btnClear.addEventListener("click", function (evt) {
-  TaskItemList.forEach((item, index) => {
-    if (item.completed) {
-      let delElem = document.getElementById(TaskItemList[index].id);
-      delElem.parentNode.removeChild(delElem);
-      delete TaskItemList[index];
-    }
-  });
-});
-
-btnAll.addEventListener("click", function (evt) {
-  document.querySelectorAll(".todo-item").forEach((item, index) => {
-    item.style.display = "block";
-  });
-});
-
-btnActive.addEventListener("click", function (evt) {
   let toDoItems = document.querySelectorAll(".todo-item");
-
-  let CompArr = TaskItemList.map((item, index) => {
+  let compArr = taskItemList.map((item) => {
     if (item.completed) {
       return item.id;
     }
   });
-  toDoItems.forEach((item, index) => {
+  toDoItems.forEach((item) => {
     idNumb = parseInt(item.id, 10);
-    CompArr.includes(idNumb)? item.style.display = "none" : item.style.display = "block";
+     if (compArr.includes(idNumb)) {
+        let delElem = document.getElementById(item.id);
+        delElem.parentNode.removeChild(delElem);
+     }
+  });
+  taskItemList = taskItemList.filter((item) => {
+    if (!(compArr.includes(item.id))) {
+        return item;
+    }
+  });
+});
+
+btnAll.addEventListener("click", (evt) => {
+  document.querySelectorAll(".todo-item").forEach((item) => {
+    item.style.display = "block";
+  });
+});
+
+btnActive.addEventListener("click", (evt) => {
+  let toDoItems = document.querySelectorAll(".todo-item");
+
+  let compArr = taskItemList.map((item) => {
+    if (item.completed) {
+      return item.id;
+    }
+  });
+  toDoItems.forEach((item) => {
+    idNumb = parseInt(item.id, 10);
+    comparing(compArr, item, idNumb, "none", "block");
   });
 });
 
@@ -56,34 +70,34 @@ toDoInput.addEventListener("keydown", function (evt) {
   const val = toDoInput.value;
 
   if (evt.key === "Enter") {
-    let ToDoItem = document.createElement("div");
-    ToDoItem.className = "todo-item";
-    ToDoItem.innerHTML =
+    let toDoItem = document.createElement("div");
+    toDoItem.className = "todo-item";
+    toDoItem.innerHTML =
       '<div class="circle" id="circle" ><span class="check-icon"></span></div><span class="todo-text">item-1</span><span class="cancel-icon"></span>';
-    ToDoItem.setAttribute("id", id);
-    const circle = ToDoItem.querySelector(".circle");
-    const cancel = ToDoItem.querySelector(".cancel-icon");
-    ToDoItem.querySelector(".todo-text").textContent = val;
+    toDoItem.setAttribute("id", id);
+    const circle = toDoItem.querySelector(".circle");
+    const cancel = toDoItem.querySelector(".cancel-icon");
+    toDoItem.querySelector(".todo-text").textContent = val;
 
     if (val === "") {
       alert("Input cannot be empty");
     } else {
-      TaskItem = {
+      taskItem = {
         taskItemText: val,
         id: id,
         completed: false,
       };
 
       id++;
-      TaskItemList.push(TaskItem);
-      toDoInput.after(ToDoItem);
+      taskItemList.push(taskItem);
+      toDoInput.after(toDoItem);
 
       circle.addEventListener("click", function (evt) {
         circle.firstChild.classList.toggle("visible");
         circle.nextElementSibling.classList.toggle("line");
-        curId = parseInt(circle.parentElement.id,10);
+        curId = parseInt(circle.parentElement.id, 10);
 
-        TaskItemList.forEach((item, index) => {
+        taskItemList.forEach((item, index) => {
           if (item.id === curId) {
             item.completed = circle.firstChild.classList.contains("visible");
           }
@@ -91,13 +105,13 @@ toDoInput.addEventListener("keydown", function (evt) {
       });
 
       cancel.addEventListener("click", function () {
-        curId = cancel.parentElement.id;
+        curId = parseInt(cancel.parentElement.id, 10);
         delElem = cancel.parentNode;
-
         delElem.parentNode.removeChild(delElem);
-        TaskItemList.forEach((item, index) => {
-          if (curId === item.id) {
-            TaskItemList.splice(curId, 1);
+        console.log(taskItemList);
+        taskItemList = taskItemList.filter((item, index) => {
+          if (!(curId === item.id)) {
+            return item;
           }
         });
       });
